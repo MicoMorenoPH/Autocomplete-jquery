@@ -1,0 +1,33 @@
+
+$(document).ready(function () {
+    $('#DocEntry').autocomplete({
+        source: function (request, response) {
+            var aa = request.term.toUpperCase().replace("'", "''");
+            $.ajax({
+                url: "/controllerName/functionName",
+                type: "post",
+                dataType: "json",
+                data: {
+                    Prefix: aa,
+                    Stat: 1
+                },
+                success: function (data) {
+                    response($.map(data, function (item) {
+                        return {
+                            label: item.DocEntry + ' -- ' + item.CardName,
+                            value: item.DocEntry
+                        };
+                    }))
+                },
+                error: function (err) {
+                    alert(err);
+                },
+            });
+        },
+        select: function (e, ui) {
+          //do something here..
+          //eto yung pag ka select mo sa dropdown ng autocomplete object mo.
+          alert($('#DocEntry').val());
+        }
+    });
+});
